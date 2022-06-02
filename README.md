@@ -46,7 +46,7 @@ This article describes how to use JWT in Qlik Sense SaaS using .Net code.
    4. QlikSaaSInstance is the SaaS instance URL (eg mytenant.eu.qlikcloud.com)
    5. QlikIntegrationID is the ID found in the Management Console after the Webintegration form was created. You can still go back to the Management Console and click on Web to find the ID.
 8. Test it on an IIS or an IIS express server, navigate to the jwt.aspx page
-## Explanation of the code##
+## Explanation of the code ##
 The getJWT function is the one creating the signed jwt, most of the values are taken from static variables defined with value defined in the web.config <br>
 There are 4 more values you most likely will change<br>
 1. claims.put("sub", "SomeSampleSeedValue1"); this will in most case be a static value identical for all users.
