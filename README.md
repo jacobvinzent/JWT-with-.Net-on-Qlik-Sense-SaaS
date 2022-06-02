@@ -27,10 +27,10 @@ This article describes how to use JWT in Qlik Sense SaaS using .Net code.
    10. Enter a name in Name field, eg. .Net App
    11. Enter http://localhost:55444 (55444 is the port your web app will run on when published, change to correct port in your setup) in Add an Origin and Click Add
    12. Click Create <br>
-   ![image](https://user-images.githubusercontent.com/6170297/169548961-575c5d2e-154e-4b61-acb3-44d4b5ab27c3.png)
+  ![Web1](https://user-images.githubusercontent.com/6170297/171605462-16c3d750-9908-4173-abd4-7a2fbfddb5de.GIF)
 
    13. You need the auto-generated ID from the list for later use <br>
-   ![image](https://user-images.githubusercontent.com/6170297/169549360-bc64b948-dafc-4272-aa04-5635a2b96468.png)
+![Web2](https://user-images.githubusercontent.com/6170297/171605631-9f4b9a1b-d1d1-47fc-8369-b35c80bd9a95.GIF)
 
    14. Click on Settings in the menu
    15. Make sure that "Enable dynamic assignment of professional users and/or analyzer users depending on the use case" and "Creation of groups" both are toogled on.
