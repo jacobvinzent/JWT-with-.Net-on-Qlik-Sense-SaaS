@@ -1,1 +1,0 @@
-# JWT-with-.Net-on-Qlik-Sense-SaaS

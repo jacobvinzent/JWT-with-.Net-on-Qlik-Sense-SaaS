@@ -1,0 +1,2 @@
+openssl genrsa -out privatekey.pem 4096
+openssl req -new -x509 -key privatekey.pem -out publickey.cer -days 1825
