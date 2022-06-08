@@ -5,15 +5,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+ 
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
+        </asp:ScriptManager>
+        <div>
+           
+        </div>
+    </form>
+       
+</body>
     <script type="text/javascript">
-    function ShowCurrentTime() {
+
+        getJWT();
+
+    function getJWT() {
         PageMethods.getJWT(OnSuccess);
     }
     function OnSuccess(response, userContext, methodName) {
       var url = JSON.parse(response).url;
       var jwt = JSON.parse(response).jwt;
         var integrationID = JSON.parse(response).integrationID;
-        console.log(jwt);
+        
 
         var raw = ""; 
           var myHeaders = new Headers();
@@ -39,19 +54,5 @@
 
     }
 </script>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
-        </asp:ScriptManager>
-        <div>
-            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
-            <asp:TextBox ID="TextBox1" runat="server" Height="503px" Width="767px"></asp:TextBox>
-            <asp:TextBox ID="txtUserName" runat="server" ></asp:TextBox>
-            <input id="btnGetTime" type="button" value="Show Current Time" onclick="ShowCurrentTime()"/>
 
-            <br />
-        </div>
-    </form>
-</body>
 </html>
