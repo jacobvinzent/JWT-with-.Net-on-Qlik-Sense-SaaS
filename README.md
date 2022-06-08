@@ -12,7 +12,7 @@ This article describes how to use JWT in Qlik Sense SaaS using .Net code.
 1. Clone this repositorty or donwload and unzip it
 2. Open the directory <solutionDir>/certs in a command line
 3. Run the two commands specified in the createsCerts.txt
-4. After running both commands you have two certificate files in the folder. The privatekey.pem file are used in the .Net code when creating the JWT. The   publickey.cer is used in a JWT IDP configuration in Qlik Sense SaaS.
+4. After running both commands you have two certificate files in the folder. The privatekey.pem file is used in the .Net code when creating the JWT. The   publickey.cer is used in a JWT IDP configuration in Qlik Sense SaaS.
    1. Login to Qlik Sense SaaS and navigate to the Management Console.
    2. Select Indentity Provider in the menu.
    3. Click create new.
