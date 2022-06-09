@@ -28,6 +28,7 @@
       var url = JSON.parse(response).url;
       var jwt = JSON.parse(response).jwt;
         var integrationID = JSON.parse(response).integrationID;
+       
         
 
         var raw = ""; 

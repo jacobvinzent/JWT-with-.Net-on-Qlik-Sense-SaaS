@@ -86,7 +86,7 @@ namespace jwt_test
             string privateKey = File.ReadAllText(certsPath + "privatekey.pem");
 
             Int32 creationTime= (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            Int32 ExpTime= (int)DateTime.UtcNow.AddSeconds(10).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            Int32 ExpTime= (int)DateTime.UtcNow.AddSeconds(500).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
 
 
@@ -94,10 +94,11 @@ namespace jwt_test
 
             claims.Add(new Claim("exp", ExpTime.ToString()));
             claims.Add(new Claim("iat", creationTime.ToString()));
-            claims.Add(new Claim("sub", "SomeSampleSeedValue1"));
+            claims.Add(new Claim("nbf", creationTime.ToString()));
+            claims.Add(new Claim("sub", "SomeSampleSeedValue1234"));
             claims.Add(new Claim("subType", "user"));
-            claims.Add(new Claim("name", "John Doe"));
-            claims.Add(new Claim("email", "JohnD@john.com"));
+            claims.Add(new Claim("name", "John Doe4"));
+            claims.Add(new Claim("email", "JohnD4@john.com"));
             claims.Add(new Claim("iss", issuer));
             claims.Add(new Claim("aud", "qlik.api/login/jwt-session"));
             claims.Add(new Claim("jti", generateRandomString(32)));
