@@ -122,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="jwt.aspx" />
-    <Content Include="Web.config" />
+    <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="jwt.aspx.cs">
@@ -137,6 +137,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Web.config.bak" />
+    <None Include="Web.config.Debug.bak">
+      <DependentUpon>Web.config.bak</DependentUpon>
+    </None>
+    <None Include="Web.config.Release.bak">
+      <DependentUpon>Web.config.bak</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

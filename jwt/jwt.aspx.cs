@@ -1,162 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
-using System.Threading;
-using System.Security.Claims;
 using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
-using RestSharp;
-using System.Threading.Tasks;
 
 namespace jwt_test
 {
     public partial class jwt_test : System.Web.UI.Page
     {
-        static String certsPath = System.Configuration.ConfigurationManager.AppSettings["certsPath"];
-        static String issuer = System.Configuration.ConfigurationManager.AppSettings["issuer"];
-        static String keyID = System.Configuration.ConfigurationManager.AppSettings["keyID"];
-        static String expiresIn = System.Configuration.ConfigurationManager.AppSettings["expiresIn"];
-        static String notBefore = System.Configuration.ConfigurationManager.AppSettings["notBefore"];
-        static String QlikSaaSInstance = System.Configuration.ConfigurationManager.AppSettings["QlikSaaSInstance"];
-        static String QlikIntegrationID = System.Configuration.ConfigurationManager.AppSettings["QlikIntegrationID"];
-        
-
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-
-
-            
-
-
-        }
+        static readonly string privateCertificateFile = System.Configuration.ConfigurationManager.AppSettings["PrivateCertificateFile"];
+        static readonly string issuer = System.Configuration.ConfigurationManager.AppSettings["Issuer"];
+        static readonly string keyID = System.Configuration.ConfigurationManager.AppSettings["KeyID"];
+        static readonly string tenantUrl = System.Configuration.ConfigurationManager.AppSettings["TenantUrl"];
+        static readonly string webIntegrationID = System.Configuration.ConfigurationManager.AppSettings["WebIntegrationID"];
+        static readonly string claimName = System.Configuration.ConfigurationManager.AppSettings["ClaimName"];
+        static readonly string claimEmail = System.Configuration.ConfigurationManager.AppSettings["ClaimEmail"];
+        static readonly string[] claimGroups = System.Configuration.ConfigurationManager.AppSettings["ClaimGroups"].ToString().Split(';');
         
         [System.Web.Services.WebMethod]
-        public static string getJWT()
+        public static string GetJWT()
         {
-            string[] groups = { "Administrators", "Sales", "Marketing" };
-            string jwt_out = createJWT("jvi", groups, "Jacob Vinzent");
-            jwtResponse resp = new jwtResponse();
-            resp.jwt = jwt_out;
-            resp.url = QlikSaaSInstance;
-            resp.integrationID = QlikIntegrationID;
+            string jwt_out = CreateJWT(claimName, claimEmail, claimGroups);
+            JwtResponse resp = new JwtResponse
+            {
+                JWT = jwt_out,
+                Url = tenantUrl,
+                WebIntegrationID = webIntegrationID
+            };
             return Newtonsoft.Json.JsonConvert.SerializeObject(resp);
         }
 
-        static async Task getJWT_task(string jwt)
+        public  static string CreateJWT(string name, string email, string[] groups)
         {
-
-           
-            var client = new RestClient("https://" + QlikSaaSInstance);
-            var request = new RestRequest("login/jwt-session?qlik-web-integration-id=" + QlikIntegrationID, Method.Post);
-
-           
-
-
-
-            request.AddHeader("qlik-web-integration-id", "iIYLxGEXTpeCYDR1DIoKLgRWoRKK3bp6");
-            request.AddHeader("content-type", "application/json");
-            request.AddHeader("Authorization", "Bearer " + jwt);
-            //var body = @"";
-            //request.AddParameter("application/json", body, ParameterType.RequestBody);
-
-            var token = new CancellationToken(true);
-
-            RestResponse resp = await client.ExecuteAsync(request);
-
-
-
-            string r = string.Empty;
-
-
-        }
-
-        public  static string createJWT(string username, string[] groups, string name)
-        {
-            string privateKey = File.ReadAllText(certsPath + "privatekey.pem");
-
-            Int32 creationTime= (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            Int32 ExpTime= (int)DateTime.UtcNow.AddSeconds(500).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-
-
-
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim("exp", ExpTime.ToString()));
-            claims.Add(new Claim("iat", creationTime.ToString()));
-            claims.Add(new Claim("nbf", creationTime.ToString()));
-            claims.Add(new Claim("sub", "SomeSampleSeedValue1234"));
-            claims.Add(new Claim("subType", "user"));
-            claims.Add(new Claim("name", "John Doe4"));
-            claims.Add(new Claim("email", "JohnD4@john.com"));
-            claims.Add(new Claim("iss", issuer));
-            claims.Add(new Claim("aud", "qlik.api/login/jwt-session"));
-            claims.Add(new Claim("jti", generateRandomString(32)));
-            claims.Add(new Claim("email_verified", "true"));
-          
-
-            Dictionary<string, object> headers = new Dictionary<string, object>
+            try
             {
-                {"typ", "JWT"},
-                { "alg", "RS256" },
-                {"kid", keyID },
-                {"expiresIn", expiresIn },
-                {"notBefore", notBefore }
-
-        };
-
-
-            var token = CreateToken(claims, privateKey, headers, groups);
-            
-            return token;
-        }
-
-
-        public static string generateRandomString(int length)
-        {
-            Random random = new Random();
-            
-            var rString = "";
-            for (var i = 0; i < length; i++)
-            {
-                rString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();
-            }
-            return rString;
-        }
-
-        public static string CreateToken(List<Claim> claims, string privateRsaKey, Dictionary<string, object> headers, string[] groups)
-        {
-            RSAParameters rsaParams;
-            using (var tr = new StringReader(privateRsaKey))
-            {
-                var pemReader = new PemReader(tr);
-                var keyPair = pemReader.ReadObject() as AsymmetricCipherKeyPair;
-                if (keyPair == null)
+                //Read the content of the private certificate file
+                if (!File.Exists(privateCertificateFile))
                 {
-                    throw new Exception("Could not read RSA private key");
+                    throw new FileNotFoundException(string.Format("The file {0} could not be found", privateCertificateFile));
                 }
-                var privateRsaParams = keyPair.Private as RsaPrivateCrtKeyParameters;
-                rsaParams = DotNetUtilities.ToRSAParameters(privateRsaParams);
+                string privateKey = File.ReadAllText(privateCertificateFile);
+
+                //Prepare the unix time values required for the signing process. All time values must be of type integer
+                var dtOffsetNow = DateTimeOffset.UtcNow;
+                var creationTime = (int)dtOffsetNow.ToUnixTimeSeconds();
+                var expTime = (int)dtOffsetNow.AddSeconds(500).ToUnixTimeSeconds();
+                var nbfTime = (int)dtOffsetNow.ToUnixTimeSeconds(); 
+
+                //Prepare the header
+                Dictionary<string, object> headers = new Dictionary<string, object>
+                {
+                    { "typ", "JWT"},
+                    { "alg", "RS256" },
+                    { "kid", keyID }
+                };
+
+                //Prepare the payload
+                var payload = new Dictionary<string, object>
+                {
+                    { "sub", Guid.NewGuid().ToString() },
+                    { "subType", "user" },
+                    { "name", name },
+                    { "email", email },
+                    { "email_verified", "true"},
+                    { "iss", issuer },
+                    { "iat", creationTime }, //value must be of type integer
+                    { "nbf", nbfTime }, //value must be of type integer
+                    { "exp", expTime }, //value must be of type integer
+                    { "jti", Guid.NewGuid().ToString() },
+                    { "aud", "qlik.api/login/jwt-session" },
+                    { "groups", groups }
+                };
+
+                //Create and return the JWT token               
+                var token = CreateToken(payload, privateKey, headers);
+
+                return token;
             }
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            catch (Exception ex)
             {
-                rsa.ImportParameters(rsaParams);
-                Dictionary<string, object> payload = claims.ToDictionary(k => k.Type, v => (object)v.Value);
-                payload.Add("groups", groups);
-                var headers_var = headers;
-                return Jose.JWT.Encode(payload, rsa, Jose.JwsAlgorithm.RS256, extraHeaders: headers);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                throw;
             }
         }
 
+        public static string CreateToken(Dictionary<string, object> payload, string privateRsaKey, Dictionary<string, object> headers)
+        {
+            RSAParameters rsaParams = new RSAParameters();
+
+            try
+            {
+                using (var tr = new StringReader(privateRsaKey))
+                {
+                    var pemReader = new PemReader(tr);
+
+                    //We need to check the first line of the certificate file for reading the RSA keys/parameters 
+                    if (privateRsaKey.Contains("-----BEGIN RSA PRIVATE KEY-----"))
+                    {
+                        if (!(pemReader.ReadObject() is AsymmetricCipherKeyPair keyPair))
+                        {
+                            throw new Exception("Could not read RSA private key");
+                        }
+                        var privateRsaParams = keyPair.Private as RsaPrivateCrtKeyParameters;
+                        rsaParams = DotNetUtilities.ToRSAParameters(privateRsaParams);
+                    }
+                    else if (privateRsaKey.Contains("-----BEGIN PRIVATE KEY-----"))
+                    {
+                        if (!(pemReader.ReadObject() is AsymmetricKeyParameter keyParam))
+                        {
+                            throw new Exception("Could not read RSA private key");
+                        }
+                        var privateRsaParams = keyParam as RsaPrivateCrtKeyParameters;
+                        rsaParams = DotNetUtilities.ToRSAParameters(privateRsaParams);
+                    }
+                    else
+                    {
+                        //Handle extra cases if required
+                        throw new Exception("Unknown key format. This key is not supported yet");
+                    }
+                }
+
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                {
+                    rsa.ImportParameters(rsaParams);
+                    return Jose.JWT.Encode(payload, rsa, Jose.JwsAlgorithm.RS256, extraHeaders: headers);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                throw;
+            }            
+        }
     }
-    }
+}

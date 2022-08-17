@@ -5,10 +5,10 @@ using System.Web;
 
 namespace jwt_test
 {
-    public class jwtResponse
+    public class JwtResponse
     {
-        public string url;
-        public string jwt;
-        public string integrationID;
+        public string Url;
+        public string JWT;
+        public string WebIntegrationID;
     }
 }
