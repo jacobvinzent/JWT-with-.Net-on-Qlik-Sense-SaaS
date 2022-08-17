@@ -1,59 +1,83 @@
-﻿# Use JWT with Qlik Sensee SaaS and .NET#
+# Use JWT with Qlik Sensee SaaS and .NET#
 
 ## Introduction ##
-This article describes how to use JWT in Qlik Sense SaaS using .Net code.
+This article describes how to generate a JSON Web Token (JWT) using .Net code in order to authenticate a user with Qlik Sense SaaS.
 
 ## Prerequsites ##
-1. Microsoft Visual Studio is installed 
-
-
+* Microsoft Visual Studio is installed on your machine to build and run the soltion 
 
 ## Installation ##
-1. Clone this repositorty or donwload and unzip it
-2. Open the directory <solutionDir>/certs in a command line
-3. Run the two commands specified in the createsCerts.txt
-4. After running both commands you have two certificate files in the folder. The privatekey.pem file is used in the .Net code when creating the JWT. The   publickey.cer is used in a JWT IDP configuration in Qlik Sense SaaS.
-   1. Login to Qlik Sense SaaS and navigate to the Management Console.
-   2. Select Indentity Provider in the menu.
-   3. Click create new.
-   4. Select JWT in the Type dropdown.
-   5. Copy the certificate from the publickey.cer file into the Certificate field.
-   6. You can either specify an Issuer and a Key ID, if you don't enter values, some random values will be automatically assigned. It is IMPORTANT to remember both the Issuer and the Key ID.
-   7. Click Create <br>
+
+1. Use one of the options available when clicking on the "Code" button to clone the reository, open it directly with Visual Studio (easiest option) or download it as a ZIP file <br>
+
+![image](https://user-images.githubusercontent.com/72072893/185239567-e80887b7-69ae-4be0-8101-0426c035c776.png)
+
+2. Open a Commandn Prompt and change to the "certs" Directory of the solution, e.g.:
+
+```
+16
+cd c:\temp\JWT-with-.Net-on-Qlik-Sense-SaaS\jwt\certs
+17
+```
+
+3. Generate a signing certificate keypair (public and private key) by running the following commands from the Command Prompt. The commands can also be found in the file `createCerts.txt`
+
+```
+openssl genrsa -out private-key.pem 2048
+openssl rsa -in private-key.pem -pubout -out public-key.pem
+
+```
+
+4. After running both commands you will have two certificate files inside the "certs" folder. The `private-key.pem` file is used in the .Net code to sign the JWT, the   `public-key.pem` is used in the configuration of a JWT identity provider (IdP) in Qlik Sense SaaS.
+
+   1. Login to Qlik Sense SaaS.
+   2. In the Management Console, open the section **Indentity provider**.
+   3. Click **Create new**.
+   4. Select IdP type **JWT** in the dropdown.
+   5. Optionally, enter a description.
+   6. Copy the content from the `public-key.pem` file into the **Certificate** field.
+   7. Optionally specify an **Issuer** and a **Key ID**. If you leave the fields empty, some random values will be automatically assigned. It is IMPORTANT to remember both the Issuer and the Key ID. You will have to update the corresponding settings in the web.config later with those values later
+   8. Click **Create** <br>
+
    ![image](https://user-images.githubusercontent.com/6170297/169548503-30d14e7f-a1fa-4dc4-a70b-081ccdc0fa8f.png)
+​
+   9. In the Management Console, open the section **Web**.
+   10. Click **Create new** to create a new web integration.
+   11. Enter a value in the **Name** field, eg. `.Net`
+   12. Enter `http://localhost:55444` in the **Add an origin** field and Click **Add**. This will add you local web application to the list of trusted origins. 55444 is the default port of your web application when you run it in debug mode in Visual Studio. If you are using a different port, please amend as needed.
+   13. Click **Create** to finish this step <br>
 
-   8. Click on Web in the menu
-   9.  Create new
-   10. Enter a name in Name field, eg. .Net App
-   11. Enter http://localhost:55444 (55444 is the port your web app will run on when published, change to correct port in your setup) in Add an Origin and Click Add
-   12. Click Create <br>
   ![Web1](https://user-images.githubusercontent.com/6170297/171605462-16c3d750-9908-4173-abd4-7a2fbfddb5de.GIF)
+​
+   14. Remeber the auto-generated **ID** of the list of web integrations for later use. You will have to insert it into the web.config of your web application. <br>
 
-   13. You need the auto-generated ID from the list for later use <br>
 ![Web2](https://user-images.githubusercontent.com/6170297/171605631-9f4b9a1b-d1d1-47fc-8369-b35c80bd9a95.GIF)
 
-   14. Click on Settings in the menu
-   15. Make sure that "Enable dynamic assignment of professional users and/or analyzer users depending on the use case" and "Creation of groups" both are toogled on.
+   15. In the Management Console, open the section **Settings**.
+   16. Make sure that the options **_"Enable dynamic assignment of professional users and/or analyzer users depending on the use case"_** and **_"Creation of groups_"**  are toogled on.
+
    ![image](https://user-images.githubusercontent.com/6170297/169549600-d4337cc6-966d-48e4-9a3d-94f799903eb0.png) ![image](https://user-images.githubusercontent.com/6170297/169549817-d530945d-92fa-4b53-b929-65e207d7f6e2.png)
 
+5. Open the web solution in Visual Studio by clicking on the file `jwt.sln` in case you haven't opened the github repository directly in Visual Studio.
+6. In the Solution Explorer of Visual Studio open the `web.config` file.
+7. Change the values of the following appSettings to match your environment/configuration: 
+   1. **PrivateCertificateFile**: Enter the full path to the private certificate `private-key.pem` you created in step 3.
+   2. **Issuer**: Enter the value of the `Issuer` from your IdP configuration in Qlik Sense SaaS.
+   3. **KeyID**: Enter the value of the `Key ID` from your IdP configuration in Qlik Sense SaaS.
+   4. **TenantUrl**: Enter the url of your Qlik Cloud tenant, e.g. `https://mytenant.eu.qlikcloud.com`.
+   5. **IntegrationID**: Enter the `ID` that was generated for your web integration configuration in Qlik Sense SaaS. If you forgot the ID, you can still go back to the `Web` section in the Management Console and copy it from your web integration configuration.
+   6. _(Optional)_: If you want, you can specify your own values for **ClaimName**, **ClaimEmail** and **ClaimGroups** in the web.config to match your environment/users. In a production system these values will most likely be dynamically assigned based on the user accessing the web application.
+8. In the Solution Explorer of Visual Studio select the file 'jwt.aspx' and in the contexte menu of that file (right click on it), select the option **Set As Start Page**. That way `jwt.aspx` will automatically be loaded when you run the application from Visual Studio.
 
-5. Open the code from the git repository in Microsoft Visual Studio
-6. Open the web.config file
-7. Change the appSettings values 
-   1. certsPath should point to the directory where the certificates are stored
-   2. issuer is the Issuer you saved when created the IDP in Qlik Sense SaaS
-   3. keyID is the Key ID you saved when created the IDP in Qlik Sense SaaS
-   4. QlikSaaSInstance is the SaaS instance URL (eg mytenant.eu.qlikcloud.com)
-   5. QlikIntegrationID is the ID found in the Management Console after the Webintegration form was created. You can still go back to the Management Console and click on Web to find the ID.
-8. Test it on an IIS or an IIS express server, navigate to the jwt.aspx page
 ## Explanation of the code ##
-The getJWT function is the one creating the signed jwt, most of the values are taken from static variables defined with values specified in the web.config <br>
-There are 4 more values you most likely will change<br>
-1. claims.put("sub", "SomeSampleSeedValue1"); this will in most case be a static value identical for all users.
-2. claims.put("name", "John Doe"); here the name of the user you are generating the JWT for should be specified.
-3. claims.put("email", "JohnD@john.com"); here the email of the user you are generating the JWT for should be specified.
-4. The first line in the getJWT function (string[] groups = { "Administrators", "Sales", "Marketing" };) groups can be applied dynamically based on the access level the user needs in Qlik SaaS
+The C# function GetJWT is called through JavaScript in the HTML code of the web application when it is loaded and handles the creation of the signed JSON Web Token (JWT). For simplicity of this example, most of the values required for the creation of the JWT are specified in the web.config. In a production environment, the following 4 claims of the payload will most likely be dynamically set:<br>
+1. `sub`: This will in most case be a static value identical for all users.
+2. `name`: Assign the name of the user you are generating the JWT for.
+3. `email`: Assign the email of the user you are generating the JWT for.
+4. `groups`: Groups can be applied dynamically based on the access level the user needs in Qlik SaaS.
    
+   
+ ## Some Postman Calls to test your solution ##
    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13762341-4b37d4fd-d515-4b27-9e7b-664c7930ae78?action=collection%2Ffork&collection-url=entityId%3D13762341-4b37d4fd-d515-4b27-9e7b-664c7930ae78%26entityType%3Dcollection%26workspaceId%3D291f8476-5f4d-4bad-ae87-071012d07349)
    
    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13762341-4b37d4fd-d515-4b27-9e7b-664c7930ae78?action=collection%2Ffork&collection-url=entityId%3D13762341-4b37d4fd-d515-4b27-9e7b-664c7930ae78%26entityType%3Dcollection%26workspaceId%3D291f8476-5f4d-4bad-ae87-071012d07349)
