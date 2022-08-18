@@ -28,7 +28,7 @@ cd c:\temp\JWT-with-.Net-on-Qlik-Sense-SaaS\jwt\certs
 3. Generate a signing certificate keypair (public and private key) by running the following commands from the Command Prompt. The commands can also be found in the file `createCerts.txt`
 
 ```
-openssl genrsa -out private-key.pem 2048
+openssl genrsa -out private-key.pem 4096
 openssl rsa -in private-key.pem -pubout -out public-key.pem
 
 ```
