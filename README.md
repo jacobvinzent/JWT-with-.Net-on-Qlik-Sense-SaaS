@@ -58,7 +58,7 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
 ​
    14. Remeber the auto-generated **ID** of the list of web integrations for later use. You will have to insert it into the web.config of your web application. <br>
 
-![Web2](https://user-images.githubusercontent.com/6170297/171605631-9f4b9a1b-d1d1-47fc-8369-b35c80bd9a95.GIF)
+![Web2](https://user-images.githubusercontent.com/6170297/171605631-9f4b9a1b-d1d1-47fc-8369-b35c80bd9a95.GIF) <br>
 
    15. In the Management Console, open the section **Settings**.
    16. Make sure that the options **_"Enable dynamic assignment of professional users and/or analyzer users depending on the use case"_** and **_"Creation of groups_"**  are toogled on.
