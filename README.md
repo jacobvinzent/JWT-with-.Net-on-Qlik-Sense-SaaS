@@ -65,16 +65,16 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
 
    ![image](https://user-images.githubusercontent.com/6170297/169549600-d4337cc6-966d-48e4-9a3d-94f799903eb0.png) ![image](https://user-images.githubusercontent.com/6170297/169549817-d530945d-92fa-4b53-b929-65e207d7f6e2.png)
 
-5. Open the web solution in Visual Studio by clicking on the file `jwt.sln` in case you haven't opened the github repository directly in Visual Studio.
-6. In the Solution Explorer of Visual Studio open the `web.config` file.
-7. Change the values of the following appSettings to match your environment/configuration: 
+17. Open the web solution in Visual Studio by clicking on the file `jwt.sln` in case you haven't opened the github repository directly in Visual Studio.
+19. In the Solution Explorer of Visual Studio open the `web.config` file.
+20. Change the values of the following appSettings to match your environment/configuration: 
    1. **PrivateCertificateFile**: Enter the full path to the private certificate `private-key.pem` you created in step 3.
    2. **Issuer**: Enter the value of the `Issuer` from your IdP configuration in Qlik Sense SaaS.
    3. **KeyID**: Enter the value of the `Key ID` from your IdP configuration in Qlik Sense SaaS.
    4. **TenantUrl**: Enter the url of your Qlik Cloud tenant, e.g. `https://mytenant.eu.qlikcloud.com`.
    5. **IntegrationID**: Enter the `ID` that was generated for your web integration configuration in Qlik Sense SaaS. If you forgot the ID, you can still go back to the `Web` section in the Management Console and copy it from your web integration configuration.
    6. _(Optional)_: If you want, you can specify your own values for **ClaimName**, **ClaimEmail** and **ClaimGroups** in the web.config to match your environment/users. In a production system these values will most likely be dynamically assigned based on the user accessing the web application.
-8. In the Solution Explorer of Visual Studio select the file 'jwt.aspx' and in the contexte menu of that file (right click on it), select the option **Set As Start Page**. That way `jwt.aspx` will automatically be loaded when you run the application from Visual Studio.
+21. In the Solution Explorer of Visual Studio select the file 'jwt.aspx' and in the contexte menu of that file (right click on it), select the option **Set As Start Page**. That way `jwt.aspx` will automatically be loaded when you run the application from Visual Studio.
 
 ## Explanation of the code ##
 The C# function GetJWT is called through JavaScript in the HTML code of the web application when it is loaded and handles the creation of the signed JSON Web Token (JWT). For simplicity of this example, most of the values required for the creation of the JWT are specified in the web.config. In a production environment, the following 4 claims of the payload will most likely be dynamically set:<br>
