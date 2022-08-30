@@ -48,7 +48,7 @@ namespace jwt_test
                 var dtOffsetNow = DateTimeOffset.UtcNow;
                 var creationTime = (int)dtOffsetNow.ToUnixTimeSeconds();
                 var expTime = (int)dtOffsetNow.AddSeconds(500).ToUnixTimeSeconds();
-                var nbfTime = (int)dtOffsetNow.ToUnixTimeSeconds(); 
+                var nbfTime = (int)dtOffsetNow.AddSeconds(-1000).ToUnixTimeSeconds(); 
 
                 //Prepare the header
                 Dictionary<string, object> headers = new Dictionary<string, object>

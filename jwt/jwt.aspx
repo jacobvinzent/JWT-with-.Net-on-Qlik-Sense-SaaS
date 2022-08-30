@@ -41,12 +41,11 @@
                 mode: "cors",
                 rejectunAuthorized: false
             };
-            //fetch("https://" + url + "/login/jwt-session?qlik-web-integration-id=" + integrationID, requestOptions)
+            
             fetch(url + "/login/jwt-session?qlik-web-integration-id=" + webIntegrationID, requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     console.log(result);
-                    //window.location.replace("https://" + url);
                     window.location.replace(url);
                 })
                 .catch(error => console.log('error', error));
