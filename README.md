@@ -1,4 +1,4 @@
-# Use JWT with Qlik Sensee SaaS and .NET#
+# Use JWT with Qlik Sense SaaS and .NET#
 
 ## Introduction ##
 This article describes how to generate a JSON Web Token (JWT) using .Net code (.Net Framework 4.6.1) in order to authenticate a user with Qlik Sense SaaS. 
@@ -9,20 +9,21 @@ Due to the .Net version, the solution makes use of 3rd party NuGet packages (Bou
 
 
 ## Prerequsites ##
-* Microsoft Visual Studio is installed on your machine to build and run the soltion 
+* Microsoft Visual Studio is installed on your machine to build and run the solution
+* Install OpenSSL on the developer machine
 
 ## Installation ##
 
-1. Use one of the options available when clicking on the "Code" button to clone the reository, open it directly with Visual Studio (easiest option) or download it as a ZIP file <br>
+1. Use one of the options available when clicking on the "Code" button to clone the repository, open it directly with Visual Studio (easiest option) or download it as a ZIP file <br>
 
 ![image](https://user-images.githubusercontent.com/72072893/185239567-e80887b7-69ae-4be0-8101-0426c035c776.png)
 
-2. Open a Commandn Prompt and change to the "certs" Directory of the solution, e.g.:
+2. Open a Command Prompt and change to the "certs" Directory of the solution, e.g.:
 
 ```
-16
+
 cd c:\temp\JWT-with-.Net-on-Qlik-Sense-SaaS\jwt\certs
-17
+
 ```
 
 3. Generate a signing certificate keypair (public and private key) by running the following commands from the Command Prompt. The commands can also be found in the file `createCerts.txt`
@@ -41,11 +42,11 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
    4. Select IdP type **JWT** in the dropdown.
    5. Optionally, enter a description.
    6. Copy the content from the `public-key.pem` file into the **Certificate** field.
-   7. Optionally specify an **Issuer** and a **Key ID**. If you leave the fields empty, some random values will be automatically assigned. It is IMPORTANT to remember both the Issuer and the Key ID. You will have to update the corresponding settings in the web.config later with those values later
-   8. Click **Create** <br>
+   7. Optionally specify an **Issuer** and a **Key ID**. If you leave the fields empty, some random values will be automatically assigned. It is IMPORTANT to remember both the Issuer and the Key ID. You will have to update the corresponding settings in the web.config later with those values later.
+   8. Click **Create**. <br>
 
    ![image](https://user-images.githubusercontent.com/6170297/169548503-30d14e7f-a1fa-4dc4-a70b-081ccdc0fa8f.png)
-​
+<br>
    9. In the Management Console, open the section **Web**.
    10. Click **Create new** to create a new web integration.
    11. Enter a value in the **Name** field, eg. `.Net`
