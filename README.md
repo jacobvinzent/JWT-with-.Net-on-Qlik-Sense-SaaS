@@ -55,7 +55,7 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
    
 
   ![Web1](https://user-images.githubusercontent.com/6170297/171605462-16c3d750-9908-4173-abd4-7a2fbfddb5de.GIF)
-​
+<br>
    14. Remeber the auto-generated **ID** of the list of web integrations for later use. You will have to insert it into the web.config of your web application. <br>
 
 ![Web2](https://user-images.githubusercontent.com/6170297/171605631-9f4b9a1b-d1d1-47fc-8369-b35c80bd9a95.GIF) <br>
