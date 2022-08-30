@@ -47,10 +47,10 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
 
    ![image](https://user-images.githubusercontent.com/6170297/169548503-30d14e7f-a1fa-4dc4-a70b-081ccdc0fa8f.png)
 <br>
-   9. In the Management Console, open the section **Web**.
-   10. Click **Create new** to create a new web integration.
-   11. Enter a value in the **Name** field, eg. `.Net`
-   12. Enter `http://localhost:55444` in the **Add an origin** field and Click **Add**. This will add you local web application to the list of trusted origins. 55444 is the default port of your web application when you run it in debug mode in Visual Studio. If you are using a different port, please amend as needed.
+   9. In the Management Console, open the section **Web**.<br>
+   10. Click **Create new** to create a new web integration.<br>
+   11. Enter a value in the **Name** field, eg. `.Net`.<br>
+   12. Enter `http://localhost:55444` in the **Add an origin** field and Click **Add**. This will add you local web application to the list of trusted origins. 55444 is the default port of your web application when you run it in debug mode in Visual Studio. If you are using a different port, please amend as needed.<br>
    13. Click **Create** to finish this step <br>
    
 
