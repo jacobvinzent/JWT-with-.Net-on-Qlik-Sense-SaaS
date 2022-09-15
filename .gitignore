@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/jwt/v15
+/jwt/privatekey.pem
+/jwt/private-key.pem
+/jwt/public-key.pem
+/jwt/publickey.pem
