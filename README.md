@@ -64,13 +64,13 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
 
 17. Open the web solution in Visual Studio by clicking on the file `jwt.sln` in case you haven't opened the github repository directly in Visual Studio.
 19. In the Solution Explorer of Visual Studio open the `web.config` file.
-20. Change the values of the following appSettings to match your environment/configuration: 
-   1. **PrivateCertificateFile**: Enter the full path to the private certificate `private-key.pem` you created in step 3.
-   2. **Issuer**: Enter the value of the `Issuer` from your IdP configuration in Qlik Sense SaaS.
-   3. **KeyID**: Enter the value of the `Key ID` from your IdP configuration in Qlik Sense SaaS.
-   4. **TenantUrl**: Enter the url of your Qlik Cloud tenant, e.g. `https://mytenant.eu.qlikcloud.com`.
-   5. **IntegrationID**: Enter the `ID` that was generated for your web integration configuration in Qlik Sense SaaS. If you forgot the ID, you can still go back to the `Web` section in the Management Console and copy it from your web integration configuration.
-   6. _(Optional)_: If you want, you can specify your own values for **ClaimName**, **ClaimEmail** and **ClaimGroups** in the web.config to match your environment/users. In a production system these values will most likely be dynamically assigned based on the user accessing the web application.
+20. Change the values of the following appSettings to match your environment/configuration:
+      - **PrivateCertificateFile**: Enter the full path to the private certificate `private-key.pem` you created in step 3.
+      - **Issuer**: Enter the value of the `Issuer` from your IdP configuration in Qlik Sense SaaS.
+      - **KeyID**: Enter the value of the `Key ID` from your IdP configuration in Qlik Sense SaaS.
+      - **TenantUrl**: Enter the url of your Qlik Cloud tenant, e.g. `https://mytenant.eu.qlikcloud.com`.
+      - **IntegrationID**: Enter the `ID` that was generated for your web integration configuration in Qlik Sense SaaS. If you forgot the ID, you can still go back to the `Web` section in the Management Console and copy it from your web integration configuration.
+      - _(Optional)_: If you want, you can specify your own values for **ClaimName**, **ClaimEmail** and **ClaimGroups** in the web.config to match your environment/users. In a production system these values will most likely be dynamically assigned based on the user accessing the web application.
 21. In the Solution Explorer of Visual Studio select the file 'jwt.aspx' and in the contexte menu of that file (right click on it), select the option **Set As Start Page**. That way `jwt.aspx` will automatically be loaded when you run the application from Visual Studio.
 
 ## Explanation of the code ##
