@@ -21,9 +21,7 @@ Due to the .Net version, the solution makes use of 3rd party NuGet packages (Bou
 2. Open a Command Prompt and change to the "certs" Directory of the solution, e.g.:
 
 ```
-
 cd c:\temp\JWT-with-.Net-on-Qlik-Sense-SaaS\jwt\certs
-
 ```
 
 3. Generate a signing certificate keypair (public and private key) by running the following commands from the Command Prompt. The commands can also be found in the file `createCerts.txt`
@@ -31,7 +29,6 @@ cd c:\temp\JWT-with-.Net-on-Qlik-Sense-SaaS\jwt\certs
 ```
 openssl genrsa -out private-key.pem 4096
 openssl rsa -in private-key.pem -pubout -out public-key.pem
-
 ```
 
 4. After running both commands you will have two certificate files inside the "certs" folder. The `private-key.pem` file is used in the .Net code to sign the JWT, the   `public-key.pem` is used in the configuration of a JWT identity provider (IdP) in Qlik Sense SaaS.
@@ -43,14 +40,14 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
    5. Optionally, enter a description.
    6. Copy the content from the `public-key.pem` file into the **Certificate** field.
    7. Optionally specify an **Issuer** and a **Key ID**. If you leave the fields empty, some random values will be automatically assigned. It is IMPORTANT to remember both the Issuer and the Key ID. You will have to update the corresponding settings in the web.config later with those values later.
-   8. Click **Create**. <br>
+   8. Click **Create**.
 
    ![image](https://user-images.githubusercontent.com/6170297/169548503-30d14e7f-a1fa-4dc4-a70b-081ccdc0fa8f.png)
-<br>
-   9. In the Management Console, open the section **Web**.<br>
-   10. Click **Create new** to create a new web integration.<br>
-   11. Enter a value in the **Name** field, eg. `.Net`.<br>
-   12. Enter `http://localhost:55444` in the **Add an origin** field and Click **Add**. This will add you local web application to the list of trusted origins. 55444 is the default port of your web application when you run it in debug mode in Visual Studio. If you are using a different port, please amend as needed.<br>
+
+   9. In the Management Console, open the section **Web**.
+   10. Click **Create new** to create a new web integration.
+   11. Enter a value in the **Name** field, eg. `.Net`.
+   12. Enter `http://localhost:55444` in the **Add an origin** field and Click **Add**. This will add you local web application to the list of trusted origins. 55444 is the default port of your web application when you run it in debug mode in Visual Studio. If you are using a different port, please amend as needed.
    13. Click **Create** to finish this step <br>
    
 
