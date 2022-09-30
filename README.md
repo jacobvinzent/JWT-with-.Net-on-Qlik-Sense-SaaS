@@ -74,8 +74,8 @@ openssl rsa -in private-key.pem -pubout -out public-key.pem
 21. In the Solution Explorer of Visual Studio select the file 'jwt.aspx' and in the contexte menu of that file (right click on it), select the option **Set As Start Page**. That way `jwt.aspx` will automatically be loaded when you run the application from Visual Studio.
 
 ## Explanation of the code ##
-The C# function GetJWT is called through JavaScript in the HTML code of the web application when it is loaded and handles the creation of the signed JSON Web Token (JWT). For simplicity of this example, most of the values required for the creation of the JWT are specified in the web.config. In a production environment, the following 4 claims of the payload will most likely be dynamically set:<br>
-1. `sub`: This will in most case be a static value identical for all users.
-2. `name`: Assign the name of the user you are generating the JWT for.
-3. `email`: Assign the email of the user you are generating the JWT for.
-4. `groups`: Groups can be applied dynamically based on the access level the user needs in Qlik SaaS.
+The C# function GetJWT is called through JavaScript in the HTML code of the web application when it is loaded and handles the creation of the signed JSON Web Token (JWT). For simplicity of this example, most of the values required for the creation of the JWT are specified in the web.config. In a production environment, the following 4 claims of the payload will most likely be dynamically set:
+- `sub`: This will in most case be a static value identical for all users.
+- `name`: Assign the name of the user you are generating the JWT for.
+- `email`: Assign the email of the user you are generating the JWT for.
+- `groups`: Groups can be applied dynamically based on the access level the user needs in Qlik SaaS.
