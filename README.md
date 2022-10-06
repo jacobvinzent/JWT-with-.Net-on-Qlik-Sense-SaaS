@@ -1,5 +1,3 @@
-# Use JWT with Qlik Sense SaaS and .NET#
-
 ## Introduction ##
 This article describes how to generate a JSON Web Token (JWT) using .Net code (.Net Framework 4.6.1) in order to authenticate a user with Qlik Sense SaaS. 
 Due to the .Net version, the solution makes use of 3rd party NuGet packages (BouncyCastle, jose-jwt).
