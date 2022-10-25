@@ -11,6 +11,7 @@ Due to the .Net version, the solution makes use of 3rd party NuGet packages (Bou
 * Install OpenSSL on the developer machine
 
 ## Installation ##
+In order to follow the installation instructions below, please go to the GitHub repository with the source code (only required if you are reading this Readme from  a location othen than the GitHub repository itself): __[JWT with .Net GitHub Repository](https://github.com/jacobvinzent/JWT-with-.Net-on-Qlik-Sense-SaaS)__
 
 1. Use one of the options available when clicking on the "Code" button to clone the repository, open it directly with Visual Studio (easiest option) or download it as a ZIP file <br>
 
